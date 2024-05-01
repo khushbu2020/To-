@@ -1,0 +1,90 @@
+function App() {
+  // const task = [
+  //   { task: "Waking", done: false , Date: Date() },
+  //   { task: "Singing", done: false , Date: Date() },
+  //   { task: "Sleeping", done: false , Date: Date()}
+  // ];
+
+// const [tasklist, settasklist] = useState(task);
+const [tasklist, settasklist] = useState(()=>{
+  const localtask=localStorage.getItem("task");
+  return localtask || []
+});
+
+const deletItem=(idx)=>{
+  let newtasklist=[...tasklist]
+  newtasklist.splice(idx,1)
+  settasklist(newtasklist);
+}
+
+const doneTask = (idx) => {
+  let newTaskList = [...tasklist];
+  newTaskList[idx].done = !newTaskList[idx].done; // Toggle done property
+  settasklist(newTaskList);
+};
+
+const updateTask=(idx)=>{
+  let newtasklist=[...tasklist]
+  newtasklist[idx].task=prompt("Enter the upadated task");
+  newtasklist[idx].Date=new Date();
+  settasklist(newtasklist)
+}
+
+const addTask=(task)=>{
+  let newtasklist=[...tasklist]
+  newtasklist.unshift({
+    task:task,
+    Date: Date()
+  })
+  settasklist(newtasklist);
+}
+useEffect(() => {
+ localStorage.removeItem("task")
+ console.log(localStorage);
+ const todo=localStorage.getItem("task");
+ if(todo){
+  settasklist(todo);
+ }
+}, []);
+useEffect(() => {
+ localStorage.setItem("task",JSON.stringify(tasklist))
+}, [tasklist]);
+  return (
+    <>
+      <Headpart addTask={addTask} />
+      <List tasklist={tasklist} deletItem={deletItem} doneTask={doneTask} updateTask={updateTask} />
+
+      {/* <List tasklist={tasklist} task={task} deletItem={deletItem} doneTask={doneTask} updateTask={updateTask} /> */}
+      
+    </>
+  )
+}
+
+export default App
+list.jsx componen
+
+
+
+
+ const [tasklist, settasklist] = useState(()=>{
+    const chtask=localStorage.getItem("task");
+    return chtask || [];
+  });
+
+  useEffect(() => {
+   localStorage.removeItem("name");
+   console.log(localStorage);
+   const list=localStorage.getItem("task");
+   if(list){
+    settasklist(list)
+   }
+  }, []);
+
+  useEffect(() => {
+   localStorage.setItem("task",JSON.stringify(tasklist))
+  }, [tasklist]);
+
+   const [tasklist, settasklist] = useState(() => {
+    const storedTasks = JSON.parse(localStorage.getItem("task"));
+    return storedTasks || []; 
+  });
